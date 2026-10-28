@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Photo Privacy Guard & Developer Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ECFDF5',
+              400: '#34D399',
+              500: '#10B981',
+              600: '#059669',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0B0F19; color: #F3F4F6; }
+    .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glow-green { box-shadow: 0 0 30px rgba(16, 185, 129, 0.12); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-brand-500 selection:text-black">
+
+  <!-- Top Navbar -->
+  <header class="border-b border-gray-800 bg-gray-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-bold text-xl">
+          🛡️
+        </div>
+        <span class="font-extrabold text-lg text-white tracking-tight">PhotoPrivacy<span class="text-brand-400">Guard</span></span>
+      </a>
+      <div class="flex items-center gap-4 text-sm font-medium">
+        <a href="/" class="text-gray-400 hover:text-white transition">← Launch App</a>
+        <a href="#features" class="text-gray-400 hover:text-white transition hidden sm:inline">Features</a>
+        <a href="#developer" class="text-gray-400 hover:text-white transition hidden sm:inline">Developer</a>
+        <a href="https://github.com/srkamd" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 transition">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-4xl mx-auto px-4 py-12 space-y-16">
+
+    <!-- Hero Header -->
+    <div class="text-center space-y-4">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold">
+        <span>📖 Project Documentation & Architecture</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        Safeguarding Visual Privacy <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400">In The Artificial Intelligence Era</span>
+      </h1>
+      <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+        Photo Privacy Guard is an open, zero-retention metadata sanitization suite designed for both modern web apps and the ChatGPT Model Context Protocol (MCP) ecosystem.
+      </p>
+    </div>
+
+    <!-- The Problem Section -->
+    <div class="glass-card rounded-2xl p-8 glow-green">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2.5">
+        <span class="text-2xl">⚠️</span> The Hidden Danger in Everyday Photos
+      </h2>
+      <p class="text-gray-300 leading-relaxed text-sm sm:text-base mb-6">
+        Modern smartphone cameras do far more than capture pixels. Whenever you snap a photo, your device secretly embeds dozens of invisible metadata tags (known as <strong>EXIF & IPTC data</strong>) directly inside the image file:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
+        <div class="p-4 rounded-xl bg-gray-900/80 border border-red-500/30">
+          <span class="text-red-400 font-bold block mb-1">📍 Exact GPS Location</span>
+          <p class="text-gray-400">Stores pinpoint latitude, longitude, and altitude—revealing your home address, workplace, or children's school location.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-gray-900/80 border border-amber-500/30">
+          <span class="text-amber-400 font-bold block mb-1">📱 Hardware Fingerprint</span>
+          <p class="text-gray-400">Logs your exact phone model, lens serial number, OS build, and unique camera sensor signatures.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-gray-900/80 border border-blue-500/30">
+          <span class="text-blue-400 font-bold block mb-1">🕒 Timestamp Audit Trail</span>
+          <p class="text-gray-400">Records exact date and time down to the second, making behavioral routine tracking trivial.</p>
+        </div>
+      </div>
+      <p class="text-gray-400 text-xs mt-4">
+        When posting images on classified marketplaces (OLX, Craigslist, Facebook Marketplace) or social forums (Reddit, Twitter), this hidden data is exposed to scrapers and bad actors.
+      </p>
+    </div>
+
+    <!-- How Features Work Section -->
+    <div id="features" class="space-y-6">
+      <div class="text-center space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">How Photo Privacy Guard Works</h2>
+        <p class="text-gray-400 text-sm">Four specialized protection engines engineered to keep you anonymous and secure.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Feature 1: Ghost Mode -->
+        <div class="glass-card rounded-2xl p-6 hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-2xl mb-4">
+            📍
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">1. Ghost Mode (Dummy GPS Injection)</h3>
+          <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Instead of simply deleting GPS data—which some social networks flag as suspicious or incomplete—Ghost Mode overwrites your genuine home coordinates with realistic tourist coordinates (e.g. <em>Eiffel Tower Paris, Shibuya Crossing Tokyo, Times Square NYC</em>).
+          </p>
+          <div class="text-xs font-mono bg-gray-900/80 p-3 rounded-lg border border-gray-800 text-brand-400">
+            • Converts decimal degrees into rational DMS IFD tags<br>
+            • Preserves authentic camera structure while cloaking your location
+          </div>
+        </div>
+
+        <!-- Feature 2: Complete EXIF Wipe -->
+        <div class="glass-card rounded-2xl p-6 hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl mb-4">
+            🧹
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">2. Pure Privacy Wipe (Zero EXIF)</h3>
+          <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">
+            For users who want zero footprint, this engine extracts pure raw pixel data and rebuilds the image canvas from scratch, discarding 100% of EXIF, XMP, IPTC, ICC profiles, and thumbnail headers.
+          </p>
+          <div class="text-xs font-mono bg-gray-900/80 p-3 rounded-lg border border-gray-800 text-blue-400">
+            • Output: Pristine JPEG, PNG, or WebP<br>
+            • Zero residual tracking bytes left in image header
+          </div>
+        </div>
+
+        <!-- Feature 3: Anti-Fraud ID Shield -->
+        <div class="glass-card rounded-2xl p-6 hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl mb-4">
+            🛡️
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">3. Anti-Fraud ID Card Watermarking</h3>
+          <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Identity theft through leaked CNIC, Passport, or utility bill photos is a severe risk in South Asia and globally. Fraudsters use leaked scans to register illegal SIM cards or take fraudulent loans.
+          </p>
+          <div class="text-xs font-mono bg-gray-900/80 p-3 rounded-lg border border-gray-800 text-amber-400">
+            • Overlays semi-transparent diagonal security text<br>
+            • e.g. "FOR BANK ACCOUNT ONLY" or "SPECIMEN COPY"<br>
+            • Keeps details readable for the recipient while voiding re-use
+          </div>
+        </div>
+
+        <!-- Feature 4: Redaction & Blackout -->
+        <div class="glass-card rounded-2xl p-6 hover:border-brand-500/40 transition">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-2xl mb-4">
+            ⬛
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">4. Smart Redaction & Censorship</h3>
+          <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Designed for classified ads and chat screenshots. Enables users to instantly mask or pixelate sensitive regions such as vehicle license plates, bank balances, account numbers, or faces.
+          </p>
+          <div class="text-xs font-mono bg-gray-900/80 p-3 rounded-lg border border-gray-800 text-purple-400">
+            • Gaussian blur & solid blackout bar modes<br>
+            • Permanent pixel overwrite (cannot be reversed)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MCP Integration Section -->
+    <div class="glass-card rounded-2xl p-8">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-3xl">🤖</span>
+        <div>
+          <h2 class="text-xl font-bold text-white">Seamless ChatGPT MCP Integration</h2>
+          <p class="text-xs text-gray-400">Model Context Protocol 2024-11-05 Specification</p>
+        </div>
+      </div>
+      <p class="text-gray-300 text-sm leading-relaxed mb-6">
+        Photo Privacy Guard is fully equipped as a standard Model Context Protocol server. AI agents in ChatGPT and Claude can call tools like <code class="text-brand-400 font-mono">inspect_photo_privacy</code>, <code class="text-brand-400 font-mono">spoof_photo_location</code>, and <code class="text-brand-400 font-mono">add_anti_fraud_watermark</code> to sanitize media on the fly during natural conversations.
+      </p>
+      <div class="p-4 rounded-xl bg-gray-950 font-mono text-xs text-gray-400 border border-gray-800 overflow-x-auto">
+        POST /mcp → JSON-RPC 2.0 Handshake (initialize, tools/list, tools/call) • Zero data logged.
+      </div>
+    </div>
+
+    <!-- Developer Bio Section -->
+    <div id="developer" class="glass-card rounded-2xl p-8 sm:p-12 border-brand-500/30 glow-green relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <!-- Avatar / Monogram -->
+        <div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 p-0.5 shadow-xl shrink-0">
+          <div class="w-full h-full bg-gray-900 rounded-[14px] flex items-center justify-center text-white font-extrabold text-3xl font-mono">
+            SA
+          </div>
+        </div>
+
+        <!-- Bio Content -->
+        <div class="space-y-4 text-center sm:text-left flex-1">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-semibold mb-2">
+              Lead Architect & Developer
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Shahrukh Ahmad</h2>
+            <p class="text-gray-400 text-sm font-medium">Software Engineer • Indie Maker • Privacy Advocate</p>
+          </div>
+
+          <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+            Hi, I'm <strong>Shahrukh Ahmad</strong>. I build high-utility, zero-knowledge software tools that empower everyday users to retain control over their digital identities, documents, and private data in an era dominated by automated AI scraping and mass tracking.
+          </p>
+
+          <p class="text-gray-400 text-xs sm:text-sm leading-relaxed">
+            My engineering philosophy centers on <strong>zero-retention architectures</strong>: software should perform its utility with mathematical precision, return the result directly to the user, and immediately forget it ever existed. Photo Privacy Guard and MyLogoQR are open embodiments of this ethos.
+          </p>
+
+          <!-- Contact & Socials -->
+          <div class="pt-4 flex flex-wrap items-center justify-center sm:justify-start gap-3">
+            <a href="mailto:srkamd.dev@gmail.com" class="px-4 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-black font-bold text-xs shadow-lg transition flex items-center gap-2">
+              <span>✉️</span> srkamd.dev@gmail.com
+            </a>
+            <a href="https://github.com/srkamd" target="_blank" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 font-bold text-xs transition flex items-center gap-2">
+              <span>🐙</span> GitHub: @srkamd
+            </a>
+            <a href="https://mylogoqr.com" target="_blank" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 text-xs font-medium transition">
+              🌐 Portfolio / MyLogoQR
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800/80 py-8 text-center text-xs text-gray-500 space-y-2">
+    <p>Photo Privacy Guard • Designed & Developed by Shahrukh Ahmad</p>
+    <div class="flex justify-center gap-4 text-gray-400">
+      <a href="/" class="hover:text-white">Home</a>
+      <a href="/privacy" class="hover:text-white">Privacy Policy</a>
+      <a href="/terms" class="hover:text-white">Terms of Service</a>
+      <a href="/about" class="hover:text-white">About</a>
+    </div>
+  </footer>
+
+</body>
+</html>

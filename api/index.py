@@ -321,6 +321,8 @@ async def handler(request: Request, full_path: str = ""):
     req_p = str(request.url.path).strip("/")
     if "privacy" in req_p or "privacy" in full_path:
         return HTMLResponse(read_static("privacy.html"))
+    if "about" in req_p or "about" in full_path:
+        return HTMLResponse(read_static("about.html"))
     if "terms" in req_p or "terms" in full_path:
         return HTMLResponse(read_static("terms.html"))
 
