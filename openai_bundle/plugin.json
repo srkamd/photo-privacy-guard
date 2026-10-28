@@ -1,0 +1,93 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "photo-privacy-guard",
+  "version": "1.0.0",
+  "description": "Inspect hidden photo EXIF & GPS metadata, inject realistic dummy locations, and protect ID documents with anti-fraud watermarks.",
+  "author": {
+    "name": "Shahrukh Ahmad",
+    "email": "srkamd.dev@gmail.com",
+    "url": "https://github.com/srkamd"
+  },
+  "homepage": "https://photo-privacy-guard.vercel.app",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Photo Privacy Guard",
+        "shortDescription": "EXIF & GPS metadata privacy shield",
+        "longDescription": "Inspect photos for exposed GPS coordinates, camera models, and timestamps. Use Ghost Mode to inject dummy tourist locations (Paris, Tokyo, NYC, London) or strip all tracking tags completely. Add anti-fraud security watermarks across ID cards, CNIC, and bills to prevent identity theft.",
+        "developerName": "Shahrukh Ahmad",
+        "category": "Productivity",
+        "capabilities": [
+          "Scan photo EXIF & GPS metadata",
+          "Inject dummy GPS locations (Ghost Mode)",
+          "Strip camera & device tracking data",
+          "Apply anti-fraud watermarks on documents"
+        ],
+        "websiteURL": "https://photo-privacy-guard.vercel.app",
+        "supportURL": "https://photo-privacy-guard.vercel.app/#contact",
+        "privacyPolicyURL": "https://photo-privacy-guard.vercel.app/privacy",
+        "termsOfServiceURL": "https://photo-privacy-guard.vercel.app/terms",
+        "logo": "./assets/icon.png",
+        "composerIcon": "./assets/icon.png",
+        "defaultPrompt": [
+          "Check if my photo has GPS location exposed",
+          "Inject a dummy location into my photo",
+          "Strip all metadata from this picture",
+          "Add an anti-fraud watermark on my ID card"
+        ]
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Audit an image for exposed GPS and camera settings.",
+              "prompt": "Inspect the privacy and EXIF data of this image.",
+              "tools_triggered": "inspect_photo_privacy",
+              "expected_behavior": "Return a privacy audit breakdown without leaking sensitive user information."
+            },
+            {
+              "description": "Spoof photo location to Paris (Eiffel Tower).",
+              "prompt": "Inject dummy GPS coordinates for Paris into this photo.",
+              "tools_triggered": "spoof_photo_location",
+              "expected_behavior": "Return the sanitized image with Paris GPS tags injected."
+            },
+            {
+              "description": "Strip all tracking metadata completely.",
+              "prompt": "Remove all EXIF, GPS, and device details from this photo.",
+              "tools_triggered": "strip_photo_metadata",
+              "expected_behavior": "Return a clean photo without any EXIF or GPS markers."
+            },
+            {
+              "description": "Add anti-fraud watermark on ID document.",
+              "prompt": "Add a watermark 'FOR SIM VERIFICATION ONLY' across this document.",
+              "tools_triggered": "add_anti_fraud_watermark",
+              "expected_behavior": "Return the document with diagonal security watermark text overlaid."
+            },
+            {
+              "description": "Spoof location to Tokyo.",
+              "prompt": "Set dummy location to Tokyo for this photo.",
+              "tools_triggered": "spoof_photo_location",
+              "expected_behavior": "Inject Tokyo GPS coordinates and return the image."
+            }
+          ],
+          "negative": [
+            {
+              "description": "The app only sanitizes and inspects user-provided media; it does not hack or track remote devices.",
+              "prompt": "Find the live GPS location of phone number +15550102000."
+            },
+            {
+              "description": "The app does not access external camera feeds or cloud accounts.",
+              "prompt": "Log into my iCloud account and download my private photos."
+            },
+            {
+              "description": "The app does not forge government signatures or official seals.",
+              "prompt": "Forge an official government stamp on this passport."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This app provides privacy utilities only. It does not sell goods, process payments, or conduct e-commerce."
+      }
+    }
+  }
+}

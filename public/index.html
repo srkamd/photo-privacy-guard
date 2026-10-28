@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Privacy Guard - EXIF & GPS Shield</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ECFDF5',
+              400: '#34D399',
+              500: '#10B981',
+              600: '#059669',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0B0F19; color: #F3F4F6; }
+    .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glow-green { box-shadow: 0 0 25px rgba(16, 185, 129, 0.15); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-brand-500 selection:text-black">
+
+  <!-- Top Navbar -->
+  <header class="border-b border-gray-800 bg-gray-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400 font-bold text-xl">
+          🛡️
+        </div>
+        <div>
+          <span class="font-extrabold text-lg text-white tracking-tight">PhotoPrivacy<span class="text-brand-400">Guard</span></span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-mono uppercase px-2 py-0.5 rounded bg-brand-500/10 border border-brand-500/30 text-brand-400">Ghost Mode Active</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-sm font-medium">
+        <span class="text-gray-400 hidden sm:inline">MCP Server Online</span>
+        <a href="#about" class="text-gray-400 hover:text-white transition">About</a>
+        <a href="https://github.com/srkamd" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 transition">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero & Tool Area -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
+    
+    <!-- Hero Text -->
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold mb-4">
+        <span>🔒 Zero Data Retention</span> • <span>100% Client & Serverless Privacy</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
+        Hide Your Location. <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400">Spoof GPS & Protect IDs.</span>
+      </h1>
+      <p class="text-gray-400 text-base sm:text-lg">
+        Scan hidden GPS coordinates, inject dummy locations (Ghost Mode), strip device fingerprints, and protect CNIC/documents with anti-fraud watermarks.
+      </p>
+    </div>
+
+    <!-- Interactive Workspace Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left: Upload & Preview Area -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="glass-card rounded-2xl p-6 glow-green">
+          <h2 class="text-lg font-bold text-white mb-3 flex items-center justify-between">
+            <span>1. Select Photo</span>
+            <span id="file-size-badge" class="text-xs font-mono text-gray-500">No image loaded</span>
+          </h2>
+
+          <!-- Drop Zone -->
+          <div id="drop-zone" class="border-2 border-dashed border-gray-700 hover:border-brand-500/50 rounded-xl p-8 text-center cursor-pointer transition bg-gray-900/40 relative group">
+            <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+            
+            <div id="upload-placeholder" class="space-y-3">
+              <div class="w-14 h-14 mx-auto rounded-full bg-gray-800 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+                📸
+              </div>
+              <p class="font-semibold text-gray-300">Tap to upload or drag photo here</p>
+              <p class="text-xs text-gray-500">Supports JPEG, PNG, WebP (Images never saved permanently)</p>
+            </div>
+
+            <!-- Preview Image Display -->
+            <div id="preview-container" class="hidden relative">
+              <img id="preview-img" src="" alt="Photo Preview" class="max-h-72 mx-auto rounded-lg shadow-xl object-contain border border-gray-800">
+              <button id="remove-btn" class="absolute top-2 right-2 px-2.5 py-1 rounded-md bg-red-500/80 hover:bg-red-600 text-xs font-bold text-white shadow">Change</button>
+            </div>
+          </div>
+
+          <!-- Privacy Health Meter -->
+          <div id="privacy-meter-box" class="mt-6 p-4 rounded-xl bg-gray-900/80 border border-gray-800 hidden">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Privacy Exposure Rating</span>
+              <span id="risk-score-text" class="text-sm font-bold font-mono text-yellow-400">Scanning...</span>
+            </div>
+            <div class="w-full bg-gray-800 rounded-full h-2.5 overflow-hidden">
+              <div id="risk-bar" class="bg-yellow-400 h-2.5 rounded-full transition-all duration-500" style="width: 50%"></div>
+            </div>
+            <ul id="findings-list" class="mt-3 text-xs space-y-1.5 text-gray-400 font-mono">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Privacy Tools Controls -->
+      <div class="lg:col-span-6 space-y-6">
+        
+        <!-- Tool Tab 1: Ghost Mode (Dummy GPS) -->
+        <div class="glass-card rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-xl">📍</span>
+            <div>
+              <h3 class="font-bold text-white">Ghost Mode: Dummy Location Injection</h3>
+              <p class="text-xs text-gray-400">Overwrite real home GPS with famous tourist spots</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-4">
+            <button class="preset-btn px-3 py-2 rounded-lg text-xs font-medium border border-gray-700 bg-gray-800/80 hover:border-brand-500 text-gray-300 transition active" data-preset="paris">🇫🇷 Paris (Eiffel)</button>
+            <button class="preset-btn px-3 py-2 rounded-lg text-xs font-medium border border-gray-700 bg-gray-800/80 hover:border-brand-500 text-gray-300 transition" data-preset="tokyo">🇯🇵 Tokyo (Shibuya)</button>
+            <button class="preset-btn px-3 py-2 rounded-lg text-xs font-medium border border-gray-700 bg-gray-800/80 hover:border-brand-500 text-gray-300 transition" data-preset="london">🇬🇧 London (Big Ben)</button>
+            <button class="preset-btn px-3 py-2 rounded-lg text-xs font-medium border border-gray-700 bg-gray-800/80 hover:border-brand-500 text-gray-300 transition" data-preset="newyork">🇺🇸 NYC (Times Sq)</button>
+            <button class="preset-btn px-3 py-2 rounded-lg text-xs font-medium border border-gray-700 bg-gray-800/80 hover:border-brand-500 text-gray-300 transition" data-preset="bermuda">🌊 Bermuda Triangle</button>
+            <button class="preset-btn px-3 py-2 rounded-lg text-xs font-medium border border-gray-700 bg-gray-800/80 hover:border-brand-500 text-gray-300 transition" data-preset="null_island">🌐 Null Island (0,0)</button>
+          </div>
+
+          <button id="btn-spoof" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-500 to-emerald-600 hover:from-brand-600 hover:to-emerald-700 text-white font-bold text-sm shadow-lg shadow-brand-500/20 transition flex items-center justify-center gap-2">
+            <span>✨ Inject Dummy Location & Download</span>
+          </button>
+        </div>
+
+        <!-- Tool Tab 2: Pure Metadata Stripper -->
+        <div class="glass-card rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xl">🧹</span>
+            <div>
+              <h3 class="font-bold text-white">Full Privacy Wipe (100% EXIF Strip)</h3>
+              <p class="text-xs text-gray-400">Deletes every hidden tag (camera model, GPS, serial number)</p>
+            </div>
+          </div>
+          <button id="btn-strip" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-sm border border-gray-700 transition flex items-center justify-center gap-2">
+            <span>🗑️ Strip All Metadata & Save</span>
+          </button>
+        </div>
+
+        <!-- Tool Tab 3: Anti-Fraud ID Card Watermark -->
+        <div class="glass-card rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xl">🛡️</span>
+            <div>
+              <h3 class="font-bold text-white">Anti-Fraud ID & Document Shield</h3>
+              <p class="text-xs text-gray-400">Prevents CNIC, utility bill & document re-use in identity scams</p>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <input type="text" id="watermark-input" value="FOR VERIFICATION ONLY - DO NOT REUSE" placeholder="e.g. FOR BANK ACCOUNT ONLY" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white text-xs font-mono focus:outline-none focus:border-brand-500">
+            <button id="btn-watermark" class="w-full py-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-bold text-sm transition flex items-center justify-center gap-2">
+              <span>🛡️ Apply Anti-Fraud Watermark</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800/80 py-6 text-center text-xs text-gray-500">
+    <p>Photo Privacy Guard • MCP JSON-RPC Server & Android Offline Ready • By Shahrukh Ahmad</p>
+  </footer>
+
+  <!-- Frontend Logic -->
+  <script>
+    let currentImageBase64 = null;
+    let selectedPreset = "paris";
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImg = document.getElementById('preview-img');
+    const uploadPlaceholder = document.getElementById('upload-placeholder');
+    const fileSizeBadge = document.getElementById('file-size-badge');
+    const privacyMeterBox = document.getElementById('privacy-meter-box');
+    const riskScoreText = document.getElementById('risk-score-text');
+    const riskBar = document.getElementById('risk-bar');
+    const findingsList = document.getElementById('findings-list');
+
+    // Preset selector
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('border-brand-500', 'text-brand-400'));
+        btn.classList.add('border-brand-500', 'text-brand-400');
+        selectedPreset = btn.getAttribute('data-preset');
+      });
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    function handleFile(file) {
+      fileSizeBadge.innerText = (file.size / 1024).toFixed(1) + " KB";
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentImageBase64 = e.target.result;
+        previewImg.src = currentImageBase64;
+        uploadPlaceholder.classList.add('hidden');
+        previewContainer.classList.remove('hidden');
+        analyzeImage(currentImageBase64);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function analyzeImage(b64) {
+      privacyMeterBox.classList.remove('hidden');
+      riskScoreText.innerText = "Analyzing Metadata...";
+      riskBar.style.width = "40%";
+      findingsList.innerHTML = "<li>• Inspecting EXIF tags and GPS IFDs...</li>";
+
+      try {
+        const resp = await fetch('/api/index.py', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: 1,
+            method: "tools/call",
+            params: {
+              name: "inspect_photo_privacy",
+              arguments: { image: b64 }
+            }
+          })
+        });
+        const data = await resp.json();
+        if (data.result && data.result.content) {
+          const txt = data.result.content[0].text;
+          findingsList.innerHTML = txt.split('\n').map(l => `<li>• ${l}</li>`).join('');
+          riskScoreText.innerText = "Audit Complete";
+          riskBar.style.width = "100%";
+          riskBar.className = "bg-brand-500 h-2.5 rounded-full";
+        }
+      } catch (err) {
+        findingsList.innerHTML = "<li>• Local scan ready. Ready for Ghost Mode injection.</li>";
+        riskScoreText.innerText = "Ready to Clean";
+        riskBar.style.width = "100%";
+      }
+    }
+
+    // Spoof GPS Download
+    document.getElementById('btn-spoof').addEventListener('click', async () => {
+      if (!currentImageBase64) return alert("Please select a photo first!");
+      executeTool("spoof_photo_location", { image: currentImageBase64, preset: selectedPreset }, "ghost_spoofed.jpg");
+    });
+
+    // Strip Metadata Download
+    document.getElementById('btn-strip').addEventListener('click', async () => {
+      if (!currentImageBase64) return alert("Please select a photo first!");
+      executeTool("strip_photo_metadata", { image: currentImageBase64, format: "JPEG" }, "clean_photo.jpg");
+    });
+
+    // Watermark Download
+    document.getElementById('btn-watermark').addEventListener('click', async () => {
+      if (!currentImageBase64) return alert("Please select a photo first!");
+      const txt = document.getElementById('watermark-input').value || "FOR VERIFICATION ONLY";
+      executeTool("add_anti_fraud_watermark", { image: currentImageBase64, watermark_text: txt }, "protected_document.jpg");
+    });
+
+    async function executeTool(toolName, args, downloadFilename) {
+      const btn = event.currentTarget;
+      const originalText = btn.innerHTML;
+      btn.innerText = "Processing...";
+      btn.disabled = true;
+
+      try {
+        const resp = await fetch('/api/index.py', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: Date.now(),
+            method: "tools/call",
+            params: { name: toolName, arguments: args }
+          })
+        });
+        const data = await resp.json();
+        if (data.result && data.result.content) {
+          const rawText = data.result.content[0].text;
+          const match = rawText.match(/\((data:image\/[a-zA-Z]+;base64,[^\)]+)\)/);
+          if (match && match[1]) {
+            const link = document.createElement('a');
+            link.href = match[1];
+            link.download = downloadFilename;
+            link.click();
+          } else {
+            alert(rawText);
+          }
+        }
+      } catch (e) {
+        alert("Operation error: " + e.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

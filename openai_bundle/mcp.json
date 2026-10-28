@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "photoprivacyguard": {
+      "type": "streamable-http",
+      "url": "https://photo-privacy-guard.vercel.app/mcp"
+    }
+  },
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json"
+}
