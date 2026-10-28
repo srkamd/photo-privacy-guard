@@ -13,8 +13,8 @@
     "com.openai": {
       "interface": {
         "displayName": "Photo Privacy Guard",
-        "shortDescription": "EXIF & GPS metadata privacy shield",
-        "longDescription": "Inspect photos for exposed GPS coordinates, camera models, and timestamps. Use Ghost Mode to inject dummy tourist locations (Paris, Tokyo, NYC, London) or strip all tracking tags completely. Add anti-fraud security watermarks across ID cards, CNIC, and bills to prevent identity theft.",
+        "shortDescription": "EXIF & GPS Privacy Shield",
+        "longDescription": "Inspect photos for exposed GPS coordinates, camera models, and timestamps. Use Ghost Mode to inject dummy tourist locations (Paris, Tokyo, NYC, London) or strip tracking tags. Add anti-fraud security watermarks across ID documents to help protect personal files.",
         "developerName": "Shahrukh Ahmad",
         "category": "Productivity",
         "capabilities": [
@@ -30,10 +30,9 @@
         "logo": "./assets/icon.png",
         "composerIcon": "./assets/icon.png",
         "defaultPrompt": [
-          "Check if my photo has GPS location exposed",
-          "Inject a dummy location into my photo",
-          "Strip all metadata from this picture",
-          "Add an anti-fraud watermark on my ID card"
+          "Check if my photo has GPS exposed",
+          "Inject dummy GPS tags into photo",
+          "Strip all metadata from this photo"
         ]
       },
       "review": {
