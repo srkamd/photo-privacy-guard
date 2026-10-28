@@ -5,7 +5,55 @@
     {
       "source": "/.well-known/openai-apps-challenge",
       "headers": [
+        {"key": "Content-Type", "value": "text/plain; charset=utf-8"}
+      ]
+    }
+  ],
+  "rewrites": [
+    {"source": "/mcp(.*)", "destination": "/api/index.py?path=/mcp$1"},
+    {"source": "/.well-known/(.*)", "destination": "/api/index.py?path=/.well-known/$1"},
+    {"source": "/api/(.*)", "destination": "/api/index.py?path=/api/$1"}
+  ]
+}
+  "version": 2,
+  "cleanUrls": true,
+  "headers": [
+    {
+  "version": 2,
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/.well-known/openai-apps-challenge",
+      "headers": [
+        {"key": "Content-Type", "value": "text/plain; charset=utf-8"}
+      ]
+    }
+  ],
+  "rewrites": [
+    {"source": "/mcp(.*)", "destination": "/api/index.py?path=/mcp$1"},
+    {"source": "/.well-known/(.*)", "destination": "/api/index.py?path=/.well-known/$1"},
+    {"source": "/api/(.*)", "destination": "/api/index.py?path=/api/$1"}
+  ]
+}
+      "source": "/.well-known/openai-apps-challenge",
+      "headers": [
         {
+  "version": 2,
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/.well-known/openai-apps-challenge",
+      "headers": [
+        {"key": "Content-Type", "value": "text/plain; charset=utf-8"}
+      ]
+    }
+  ],
+  "rewrites": [
+    {"source": "/mcp(.*)", "destination": "/api/index.py?path=/mcp$1"},
+    {"source": "/.well-known/(.*)", "destination": "/api/index.py?path=/.well-known/$1"},
+    {"source": "/api/(.*)", "destination": "/api/index.py?path=/api/$1"}
+  ]
+}
           "key": "Content-Type",
           "value": "text/plain; charset=utf-8"
         }
@@ -14,14 +62,62 @@
   ],
   "rewrites": [
     {
+  "version": 2,
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/.well-known/openai-apps-challenge",
+      "headers": [
+        {"key": "Content-Type", "value": "text/plain; charset=utf-8"}
+      ]
+    }
+  ],
+  "rewrites": [
+    {"source": "/mcp(.*)", "destination": "/api/index.py?path=/mcp$1"},
+    {"source": "/.well-known/(.*)", "destination": "/api/index.py?path=/.well-known/$1"},
+    {"source": "/api/(.*)", "destination": "/api/index.py?path=/api/$1"}
+  ]
+}
       "source": "/mcp(.*)",
       "destination": "/api/index.py?path=/mcp$1"
     },
     {
+  "version": 2,
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/.well-known/openai-apps-challenge",
+      "headers": [
+        {"key": "Content-Type", "value": "text/plain; charset=utf-8"}
+      ]
+    }
+  ],
+  "rewrites": [
+    {"source": "/mcp(.*)", "destination": "/api/index.py?path=/mcp$1"},
+    {"source": "/.well-known/(.*)", "destination": "/api/index.py?path=/.well-known/$1"},
+    {"source": "/api/(.*)", "destination": "/api/index.py?path=/api/$1"}
+  ]
+}
       "source": "/.well-known/(.*)",
       "destination": "/api/index.py?path=/.well-known/$1"
     },
     {
+  "version": 2,
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/.well-known/openai-apps-challenge",
+      "headers": [
+        {"key": "Content-Type", "value": "text/plain; charset=utf-8"}
+      ]
+    }
+  ],
+  "rewrites": [
+    {"source": "/mcp(.*)", "destination": "/api/index.py?path=/mcp$1"},
+    {"source": "/.well-known/(.*)", "destination": "/api/index.py?path=/.well-known/$1"},
+    {"source": "/api/(.*)", "destination": "/api/index.py?path=/api/$1"}
+  ]
+}
       "source": "/api/(.*)",
       "destination": "/api/index.py?path=/api/$1"
     }
