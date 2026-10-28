@@ -14,7 +14,7 @@
   ],
   "rewrites": [
     {
-      "source": "/mcp",
+      "source": "/mcp(.*)",
       "destination": "/api/index.py"
     },
     {

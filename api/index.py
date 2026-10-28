@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse, HTMLResponse, JSONResponse, Response
+from fastapi.responses import PlainTextResponse, HTMLResponse, JSONResponse, Response, StreamingResponse
 import io
 import base64
 import os
@@ -317,6 +317,14 @@ async def openai_challenge():
 
 @app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"])
 async def handler(request: Request, full_path: str = ""):
+    # 0. Handle OPTIONS
+    if request.method == "OPTIONS":
+        return Response(status_code=200, headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS, HEAD",
+            "Access-Control-Allow-Headers": "*"
+        })
+
     # 1. POST is ALWAYS handled as MCP JSON-RPC
     if request.method == "POST":
         try:
@@ -340,8 +348,28 @@ async def handler(request: Request, full_path: str = ""):
     if "openai-apps-challenge" in all_path_and_headers or request.query_params.get("challenge") == "1":
         return PlainTextResponse(get_challenge_token())
 
-    # 3. Static Assets & Pages
+    # 3. MCP Endpoint Handler for GET / SSE
     req_p = str(request.url.path).strip("/")
+    if "mcp" in req_p or "mcp" in full_path or full_path == "mcp":
+        accept_hdr = request.headers.get("accept", "").lower()
+        if "text/event-stream" in accept_hdr:
+            async def sse_gen():
+                yield "event: endpoint\ndata: /mcp\n\n"
+            return StreamingResponse(sse_gen(), media_type="text/event-stream", headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "Access-Control-Allow-Origin": "*"
+            })
+        return JSONResponse({
+            "status": "online",
+            "app": "Photo Privacy Guard MCP Server",
+            "version": "1.0.0",
+            "protocol": "MCP JSON-RPC 2024-11-05",
+            "mcp_endpoint": "/mcp",
+            "tools": [t["name"] for t in MCP_TOOLS]
+        })
+
+    # 4. Static Assets & Pages
     if "manifest.json" in req_p or "manifest.json" in full_path:
         mp = os.path.join(BASE_DIR, "public", "manifest.json")
         if os.path.exists(mp):
