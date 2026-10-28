@@ -317,6 +317,17 @@ async def openai_challenge():
 
 @app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"])
 async def handler(request: Request, full_path: str = ""):
+    headers = {k.lower(): v for k, v in request.headers.items()}
+    path_param = request.query_params.get("path", "").lower()
+    req_path = (
+        path_param
+        or headers.get("x-matched-path", "")
+        or headers.get("x-vercel-matched-path", "")
+        or headers.get("x-forwarded-path", "")
+        or str(request.url.path)
+    ).lower()
+    all_context = f"{full_path} {req_path} {str(request.url)}".lower()
+
     # 0. Handle OPTIONS
     if request.method == "OPTIONS":
         return Response(status_code=200, headers={
@@ -325,7 +336,11 @@ async def handler(request: Request, full_path: str = ""):
             "Access-Control-Allow-Headers": "*"
         })
 
-    # 1. POST is ALWAYS handled as MCP JSON-RPC
+    # 1. Domain challenge verification (MUST be plain text!)
+    if "openai-apps-challenge" in all_context or request.query_params.get("challenge") == "1":
+        return PlainTextResponse(get_challenge_token())
+
+    # 2. MCP JSON-RPC for POST (always, regardless of path)
     if request.method == "POST":
         try:
             raw = await request.body()
@@ -343,15 +358,9 @@ async def handler(request: Request, full_path: str = ""):
                 "error": {"code": -32700, "message": f"Parse error: {str(e)}"}
             }, status_code=200)
 
-    # 2. Domain challenge fallback
-    all_path_and_headers = f"{full_path} {request.url} {dict(request.headers)}".lower()
-    if "openai-apps-challenge" in all_path_and_headers or request.query_params.get("challenge") == "1":
-        return PlainTextResponse(get_challenge_token())
-
-    # 3. MCP Endpoint Handler for GET / SSE
-    req_p = str(request.url.path).strip("/")
-    if "mcp" in req_p or "mcp" in full_path or full_path == "mcp":
-        accept_hdr = request.headers.get("accept", "").lower()
+    # 3. MCP Endpoint for GET / SSE
+    if "mcp" in all_context or req_path.startswith("/mcp"):
+        accept_hdr = headers.get("accept", "")
         if "text/event-stream" in accept_hdr:
             async def sse_gen():
                 yield "event: endpoint\ndata: /mcp\n\n"
@@ -370,6 +379,7 @@ async def handler(request: Request, full_path: str = ""):
         })
 
     # 4. Static Assets & Pages
+    req_p = str(request.url.path).strip("/")
     if "manifest.json" in req_p or "manifest.json" in full_path:
         mp = os.path.join(BASE_DIR, "public", "manifest.json")
         if os.path.exists(mp):
@@ -390,5 +400,16 @@ async def handler(request: Request, full_path: str = ""):
     if "terms" in req_p or "terms" in full_path:
         return HTMLResponse(read_static("terms.html"))
 
-    # 4. Default: Web App UI
+    # 5. Default
+    accept = headers.get("accept", "")
+    if "text/html" not in accept:
+        return JSONResponse({
+            "status": "online",
+            "app": "Photo Privacy Guard MCP Server",
+            "version": "1.0.0",
+            "protocol": "MCP JSON-RPC 2024-11-05",
+            "mcp_endpoint": "/mcp",
+            "tools": [t["name"] for t in MCP_TOOLS]
+        })
+
     return HTMLResponse(read_static("index.html"))
