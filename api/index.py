@@ -196,6 +196,10 @@ def handle_mcp_request(body: dict) -> dict:
     if method == "tools/list":
         return {"jsonrpc": "2.0", "id": req_id, "result": {"tools": MCP_TOOLS}}
 
+    if method in ("resources/list", "prompts/list", "roots/list"):
+        key = method.split("/")[0]
+        return {"jsonrpc": "2.0", "id": req_id, "result": {key: []}}
+
     if method == "tools/call":
         name = params.get("name")
         args = params.get("arguments", {})
@@ -319,7 +323,9 @@ async def handler(request: Request, full_path: str = ""):
             raw = await request.body()
             if raw:
                 body = json.loads(raw.decode("utf-8"))
-                if isinstance(body, dict) and "method" in body:
+                if isinstance(body, list):
+                    return JSONResponse([handle_mcp_request(item) for item in body if isinstance(item, dict)])
+                elif isinstance(body, dict) and "method" in body:
                     result = handle_mcp_request(body)
                     return JSONResponse(result)
         except Exception as e:
