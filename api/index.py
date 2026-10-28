@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse, HTMLResponse, JSONResponse
+from fastapi.responses import PlainTextResponse, HTMLResponse, JSONResponse, Response
 import io
 import base64
 import os
@@ -334,8 +334,21 @@ async def handler(request: Request, full_path: str = ""):
     if "openai-apps-challenge" in all_path_and_headers or request.query_params.get("challenge") == "1":
         return PlainTextResponse(get_challenge_token())
 
-    # 3. Static Pages
+    # 3. Static Assets & Pages
     req_p = str(request.url.path).strip("/")
+    if "manifest.json" in req_p or "manifest.json" in full_path:
+        mp = os.path.join(BASE_DIR, "public", "manifest.json")
+        if os.path.exists(mp):
+            with open(mp, "r", encoding="utf-8") as f:
+                return Response(content=f.read(), media_type="application/manifest+json")
+
+    if req_p.endswith(".png") or full_path.endswith(".png"):
+        fname = os.path.basename(req_p if req_p.endswith(".png") else full_path)
+        p = os.path.join(BASE_DIR, "public", fname)
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                return Response(content=f.read(), media_type="image/png")
+
     if "privacy" in req_p or "privacy" in full_path:
         return HTMLResponse(read_static("privacy.html"))
     if "about" in req_p or "about" in full_path:
