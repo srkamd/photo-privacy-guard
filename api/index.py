@@ -288,7 +288,7 @@ def read_static(filename: str) -> str:
 
 
 def get_challenge_token() -> str:
-    token = os.getenv("OPENAI_CHALLENGE_TOKEN", "")
+    token = os.getenv("OPENAI_CHALLENGE_TOKEN", "Lawd5xjQFTf8GnfKaIovD7X8yJ52tIBhCFzJekbIvt4")
     if not token or token == "OPENAI_CHALLENGE_TOKEN":
         for candidate in [
             os.path.join(BASE_DIR, ".well-known", "openai-apps-challenge"),
@@ -302,7 +302,7 @@ def get_challenge_token() -> str:
                             return t
                 except Exception:
                     pass
-    return token
+    return token if token else "Lawd5xjQFTf8GnfKaIovD7X8yJ52tIBhCFzJekbIvt4"
 
 
 @app.get("/.well-known/openai-apps-challenge")
