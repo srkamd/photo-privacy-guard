@@ -5,7 +5,7 @@
   "description": "Inspect hidden photo EXIF & GPS metadata, inject realistic dummy locations, and protect ID documents with anti-fraud watermarks.",
   "author": {
     "name": "Shahrukh Ahmad",
-    "email": "srkamd.dev@gmail.com",
+    "email": "srkamduk@gmail.com",
     "url": "https://github.com/srkamd"
   },
   "homepage": "https://photo-privacy-guard.vercel.app",
