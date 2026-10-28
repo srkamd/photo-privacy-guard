@@ -287,11 +287,28 @@ def read_static(filename: str) -> str:
     return f"<h1>{filename} not found</h1>"
 
 
+def get_challenge_token() -> str:
+    token = os.getenv("OPENAI_CHALLENGE_TOKEN", "")
+    if not token or token == "OPENAI_CHALLENGE_TOKEN":
+        for candidate in [
+            os.path.join(BASE_DIR, ".well-known", "openai-apps-challenge"),
+            os.path.join(BASE_DIR, "public", ".well-known", "openai-apps-challenge"),
+        ]:
+            if os.path.exists(candidate):
+                try:
+                    with open(candidate, "r", encoding="utf-8") as f:
+                        t = f.read().strip()
+                        if t and t != "PENDING_OPENAI_TOKEN":
+                            return t
+                except Exception:
+                    pass
+    return token
+
+
 @app.get("/.well-known/openai-apps-challenge")
 @app.get("/api/index.py/.well-known/openai-apps-challenge")
 async def openai_challenge():
-    token = os.getenv("OPENAI_CHALLENGE_TOKEN", "")
-    return PlainTextResponse(token)
+    return PlainTextResponse(get_challenge_token())
 
 
 @app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"])
@@ -315,7 +332,7 @@ async def handler(request: Request, full_path: str = ""):
     # 2. Domain challenge fallback
     all_path_and_headers = f"{full_path} {request.url} {dict(request.headers)}".lower()
     if "openai-apps-challenge" in all_path_and_headers or request.query_params.get("challenge") == "1":
-        return PlainTextResponse(os.getenv("OPENAI_CHALLENGE_TOKEN", ""))
+        return PlainTextResponse(get_challenge_token())
 
     # 3. Static Pages
     req_p = str(request.url.path).strip("/")
