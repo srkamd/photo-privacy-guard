@@ -336,6 +336,33 @@ async def openai_challenge():
     return PlainTextResponse(get_challenge_token())
 
 
+@app.get("/privacy")
+@app.get("/privacy.html")
+@app.get("/api/index.py/privacy")
+async def privacy_page():
+    return HTMLResponse(read_static("privacy.html"), headers={"Content-Type": "text/html; charset=utf-8"})
+
+
+@app.get("/terms")
+@app.get("/terms.html")
+@app.get("/api/index.py/terms")
+async def terms_page():
+    return HTMLResponse(read_static("terms.html"), headers={"Content-Type": "text/html; charset=utf-8"})
+
+
+@app.get("/about")
+@app.get("/about.html")
+@app.get("/api/index.py/about")
+async def about_page():
+    return HTMLResponse(read_static("about.html"), headers={"Content-Type": "text/html; charset=utf-8"})
+
+
+@app.get("/health")
+@app.get("/api/index.py/health")
+async def health_page():
+    return JSONResponse({"status": "healthy", "app": "Photo Privacy Guard MCP Server", "version": "1.0.0"})
+
+
 @app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"])
 async def handler(request: Request, full_path: str = ""):
     headers = {k.lower(): v for k, v in request.headers.items()}
@@ -379,7 +406,32 @@ async def handler(request: Request, full_path: str = ""):
                 "error": {"code": -32700, "message": f"Parse error: {str(e)}"}
             }, status_code=200)
 
-    # 3. MCP Endpoint for GET / SSE
+    # 3. Static Assets & Pages (check first so /privacy, /terms, /about always return HTML)
+    if "privacy" in all_context:
+        return HTMLResponse(read_static("privacy.html"), headers={"Content-Type": "text/html; charset=utf-8"})
+    if "terms" in all_context:
+        return HTMLResponse(read_static("terms.html"), headers={"Content-Type": "text/html; charset=utf-8"})
+    if "about" in all_context:
+        return HTMLResponse(read_static("about.html"), headers={"Content-Type": "text/html; charset=utf-8"})
+
+    if "manifest.json" in all_context:
+        mp = os.path.join(BASE_DIR, "public", "manifest.json")
+        if os.path.exists(mp):
+            with open(mp, "r", encoding="utf-8") as f:
+                return Response(content=f.read(), media_type="application/manifest+json")
+
+    for img_ext in [".png", ".jpg", ".jpeg", ".ico", ".svg"]:
+        if img_ext in all_context:
+            for part in all_context.split():
+                if part.endswith(img_ext):
+                    fname = os.path.basename(part)
+                    p = os.path.join(BASE_DIR, "public", fname)
+                    if os.path.exists(p):
+                        media_type = "image/png" if img_ext == ".png" else "image/jpeg"
+                        with open(p, "rb") as f:
+                            return Response(content=f.read(), media_type=media_type)
+
+    # 4. MCP Endpoint for GET / SSE
     if "mcp" in all_context or req_path.startswith("/mcp"):
         accept_hdr = headers.get("accept", "")
         if "text/event-stream" in accept_hdr:
@@ -399,38 +451,16 @@ async def handler(request: Request, full_path: str = ""):
             "tools": [t["name"] for t in MCP_TOOLS]
         })
 
-    # 4. Static Assets & Pages
-    req_p = str(request.url.path).strip("/")
-    if "manifest.json" in req_p or "manifest.json" in full_path:
-        mp = os.path.join(BASE_DIR, "public", "manifest.json")
-        if os.path.exists(mp):
-            with open(mp, "r", encoding="utf-8") as f:
-                return Response(content=f.read(), media_type="application/manifest+json")
-
-    if req_p.endswith(".png") or full_path.endswith(".png"):
-        fname = os.path.basename(req_p if req_p.endswith(".png") else full_path)
-        p = os.path.join(BASE_DIR, "public", fname)
-        if os.path.exists(p):
-            with open(p, "rb") as f:
-                return Response(content=f.read(), media_type="image/png")
-
-    if "privacy" in req_p or "privacy" in full_path:
-        return HTMLResponse(read_static("privacy.html"))
-    if "about" in req_p or "about" in full_path:
-        return HTMLResponse(read_static("about.html"))
-    if "terms" in req_p or "terms" in full_path:
-        return HTMLResponse(read_static("terms.html"))
-
-    # 5. Default
+    # 5. Default Page (index.html or status)
     accept = headers.get("accept", "")
-    if "text/html" not in accept:
-        return JSONResponse({
-            "status": "online",
-            "app": "Photo Privacy Guard MCP Server",
-            "version": "1.0.0",
-            "protocol": "MCP JSON-RPC 2024-11-05",
-            "mcp_endpoint": "/mcp",
-            "tools": [t["name"] for t in MCP_TOOLS]
-        })
+    if "text/html" in accept or accept == "*/*" or not accept:
+        return HTMLResponse(read_static("index.html"), headers={"Content-Type": "text/html; charset=utf-8"})
 
-    return HTMLResponse(read_static("index.html"))
+    return JSONResponse({
+        "status": "online",
+        "app": "Photo Privacy Guard MCP Server",
+        "version": "1.0.0",
+        "protocol": "MCP JSON-RPC 2024-11-05",
+        "mcp_endpoint": "/mcp",
+        "tools": [t["name"] for t in MCP_TOOLS]
+    })

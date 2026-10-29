@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "photo-privacy-guard",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Inspect hidden photo EXIF & GPS metadata, inject realistic dummy locations, and protect ID documents with anti-fraud watermarks.",
   "author": {
     "name": "Shahrukh Ahmad",
@@ -13,14 +13,14 @@
     "com.openai": {
       "interface": {
         "displayName": "Photo Privacy Guard",
-        "shortDescription": "EXIF & GPS Privacy Shield",
-        "longDescription": "Inspect photos for exposed GPS coordinates, camera models, and timestamps. Use Ghost Mode to inject dummy tourist locations (Paris, Tokyo, NYC, London) or strip tracking tags. Add anti-fraud security watermarks across ID documents to help protect personal files.",
+        "shortDescription": "EXIF & GPS Privacy Productivity Tool",
+        "longDescription": "A document and photo productivity utility to audit and protect image privacy. Inspect photos for exposed GPS coordinates, camera models, and timestamps. Sanitize media before sharing, remove tracking tags, inject dummy location markers, and apply anti-fraud security watermarks across sensitive receipts and ID cards.",
         "developerName": "Shahrukh Ahmad",
         "category": "Productivity",
         "capabilities": [
-          "Scan photo EXIF & GPS metadata",
-          "Inject dummy GPS locations (Ghost Mode)",
-          "Strip camera & device tracking data",
+          "Audit photo EXIF and GPS tracking metadata",
+          "Sanitize and strip tracking tags from media",
+          "Inject dummy GPS location coordinates",
           "Apply anti-fraud watermarks on documents"
         ],
         "websiteURL": "https://photo-privacy-guard.vercel.app",
