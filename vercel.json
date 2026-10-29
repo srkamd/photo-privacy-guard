@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "cleanUrls": true,
   "headers": [
     {
       "source": "/.well-known/openai-apps-challenge",
@@ -14,16 +13,8 @@
   ],
   "rewrites": [
     {
-      "source": "/mcp(.*)",
-      "destination": "/api/index.py?path=/mcp$1"
-    },
-    {
-      "source": "/.well-known/(.*)",
-      "destination": "/api/index.py?path=/.well-known/$1"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/index.py?path=/api/$1"
+      "source": "/(.*)",
+      "destination": "/api/index.py"
     }
   ]
 }

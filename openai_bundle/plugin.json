@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "photo-privacy-guard",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Inspect hidden photo EXIF & GPS metadata, inject realistic dummy locations, and protect ID documents with anti-fraud watermarks.",
   "author": {
     "name": "Shahrukh Ahmad",
