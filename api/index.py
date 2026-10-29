@@ -304,12 +304,124 @@ def handle_mcp_request(body: dict) -> dict:
     return {"jsonrpc": "2.0", "id": req_id, "error": {"code": -32601, "message": f"Unknown method: {method}"}}
 
 
+PRIVACY_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Photo Privacy Guard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-gray-200 min-h-screen py-12 px-4 sm:px-6 lg:px-8 font-sans">
+  <div class="max-w-3xl mx-auto bg-gray-900 border border-gray-800 rounded-2xl p-8 sm:p-12 shadow-2xl">
+    <div class="flex items-center gap-3 mb-6">
+      <span class="text-3xl">&#128737;&#65039;</span>
+      <h1 class="text-3xl font-extrabold text-white">Privacy Policy</h1>
+    </div>
+    <p class="text-sm text-gray-400 mb-8">Effective Date: October 28, 2026 &bull; Last Updated: October 28, 2026</p>
+
+    <div class="space-y-6 text-gray-300 leading-relaxed text-sm">
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">1. Overview &amp; Privacy Philosophy</h2>
+        <p>Photo Privacy Guard ("we", "our", or "the Service") is built from the ground up as a zero-knowledge, privacy-first image and document sanitization utility. We believe your private photos, GPS locations, and identity documents belong solely to you.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">2. Zero Data Retention Policy</h2>
+        <p>When you upload or submit an image for metadata inspection, Ghost Mode location injection, or watermark protection, the image is processed purely in ephemeral server memory (RAM) and immediately returned to you. We do not store, archive, log, sell, or train AI models on your photos.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">3. Data Collected &amp; Processed</h2>
+        <p>The Service only processes the specific image binary data you explicitly supply during a session. No personal identifying information (PII), email addresses, phone numbers, or account credentials are collected or tracked.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">4. Third-Party Sharing</h2>
+        <p>We do not share, transmit, or disclose any user images or extracted metadata to third parties, advertising networks, or analytics trackers.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">5. Security &amp; Encryption</h2>
+        <p>All data transmitted between your device, ChatGPT, and our serverless infrastructure is protected using modern Transport Layer Security (TLS/HTTPS 1.3) encryption.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">6. Contact Us</h2>
+        <p>If you have any questions or inquiries regarding this Privacy Policy, please contact developer Shahrukh Ahmad at <span class="text-emerald-400 font-mono">srkamduk@gmail.com</span>.</p>
+      </section>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+      <a href="/" class="text-emerald-400 hover:underline mr-4">&larr; Back to App</a>
+      <a href="/terms" class="text-gray-400 hover:underline">Terms of Service</a>
+    </div>
+  </div>
+</body>
+</html>"""
+
+TERMS_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service - Photo Privacy Guard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-gray-200 min-h-screen py-12 px-4 sm:px-6 lg:px-8 font-sans">
+  <div class="max-w-3xl mx-auto bg-gray-900 border border-gray-800 rounded-2xl p-8 sm:p-12 shadow-2xl">
+    <div class="flex items-center gap-3 mb-6">
+      <span class="text-3xl">&#9878;&#65039;</span>
+      <h1 class="text-3xl font-extrabold text-white">Terms of Service</h1>
+    </div>
+    <p class="text-sm text-gray-400 mb-8">Effective Date: October 28, 2026</p>
+
+    <div class="space-y-6 text-gray-300 leading-relaxed text-sm">
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">1. Acceptance of Terms</h2>
+        <p>By accessing or using Photo Privacy Guard through web or ChatGPT plugin integrations, you agree to comply with and be bound by these Terms of Service.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">2. Permitted Use</h2>
+        <p>You may use this tool solely for lawful personal and commercial privacy protection, such as sanitizing personal photos before sharing or applying anti-fraud watermarks on your own identity documents.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">3. Prohibited Activities</h2>
+        <p>You agree not to use the Service to forge official state documents, evade law enforcement investigations, conduct fraudulent activities, or infringe upon the intellectual property of third parties.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">4. Disclaimer of Warranty</h2>
+        <p>The Service is provided on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">5. Contact</h2>
+        <p>For inquiries, contact Shahrukh Ahmad at <span class="text-emerald-400 font-mono">srkamduk@gmail.com</span>.</p>
+      </section>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+      <a href="/" class="text-emerald-400 hover:underline mr-4">&larr; Back to App</a>
+      <a href="/privacy" class="text-gray-400 hover:underline">Privacy Policy</a>
+    </div>
+  </div>
+</body>
+</html>"""
+
+
 def read_static(filename: str) -> str:
+    if "privacy" in filename:
+        return PRIVACY_HTML
+    if "terms" in filename:
+        return TERMS_HTML
     path = os.path.join(BASE_DIR, "public", filename)
     if os.path.exists(path):
         with open(path, "r", encoding="utf-8") as f:
             return f.read()
-    return f"<h1>{filename} not found</h1>"
+    return PRIVACY_HTML if "privacy" in filename else TERMS_HTML
 
 
 def get_challenge_token() -> str:
